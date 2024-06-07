@@ -1,24 +1,48 @@
-import styles from './CreateTweetForm.module.css';
-import { useState } from 'react';
-import Button from 'react-bootstrap/Button';
+import { useState, useRef } from "react";
+import PropTypes from "prop-types";
+import styles from "./CreateTweetForm.module.css";
+import { Button, Form } from "react-bootstrap";
 
+function CreateTweetForm({ addTweet }) {
+  const [content, setContent] = useState("");
+  const inputRef = useRef(null);
 
-function CreateTweetForm({addTweet}){
-const [content, setContent]= useState('');
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-    const handleSubmit =(e)=>{
-        e.preventDefault();
-        addTweet(e.target['content'].value);
-        setContent('');
+    if(inputRef.current.value === ''){
+inputRef.current.focus();
+return;
     }
-    return(
-        <form onSubmit={handleSubmit} className={styles.container}>
-            <label htmlFor="content" >What is in your mind</label>
-            <input type="text" name="content" id="content" value={content} onChange={(e)=>setContent(e.target.value)}/>
 
-            <Button  type="submit" value="post">Post</Button>
-        </form>
-    );
+
+    addTweet(content);
+    setContent("");
+  };
+
+  return (
+    <Form onSubmit={handleSubmit} className={styles.container}>
+      <Form.Label htmlFor="content">
+        <h4>whats in you mind?</h4>
+      </Form.Label>
+
+      <Form.Control
+        className="mb-4"
+        type="text"
+        name="content"
+        id="content"
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+        ref={inputRef}
+      />
+
+      <Button type="submit">Tweet</Button>
+    </Form>
+  );
 }
+
+CreateTweetForm.propTypes = {
+  addTweet: PropTypes.func,
+};
 
 export default CreateTweetForm;

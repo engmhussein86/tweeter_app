@@ -11,6 +11,9 @@ npm i uuid
 npm i react-icons --save
 npm install react-bootstrap bootstrap
 
+add this to main.jsx:
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 https://react-icons.github.io/react-icons/
 https://create-react-app.dev/docs/adding-a-css-modules-stylesheet/

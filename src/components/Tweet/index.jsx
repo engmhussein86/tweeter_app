@@ -1,27 +1,69 @@
-import styles from "./Tweet.module.css";
+import { useState } from "react";
+import { createPortal } from "react-dom";
 import PropTypes from "prop-types";
-import {FaHeart} from "react-icons/fa";
-import {LiaRetweetSolid} from "react-icons/lia";
-import Button from 'react-bootstrap/Button';
+import { FaHeart } from "react-icons/fa";
+import { LiaRetweetSolid } from "react-icons/lia";
+import Button from "react-bootstrap/Button";
+import UpdateTweetForm from "../UpdateTweetForm";
 
-function Tweet({tweet, removeTweet}) {
+function Tweet({ tweet, removeTweet, updateTweet }) {
+  const [showModal, setShowModal] = useState(false);
+
   return (
-    <div className={styles.container}>
-      <div>{tweet.username}</div>
-      <div>{tweet.content}</div>
-      <div>
-      <div><FaHeart/> {tweet.likes}</div>
-      <div><LiaRetweetSolid size={22}/>{tweet.retweets}</div>
+    <>
+      {/* MODAL  */}
+      {/* {showModal &&
+        createPortal(
+          <UpdateTweetForm
+            tweet={tweet}
+            setShowModal={setShowModal}
+            updateTweet={updateTweet}
+          />,
+          document.body,
+        )} */}
+      <div className="border p-3 my-3">
+        <div>@{tweet.username}</div>
+        <div className="h6">{tweet.content}</div>
+
+        <div className="d-flex">
+          <div className="mx-2">
+            <FaHeart /> {tweet.likes}
+          </div>
+          <div>
+            <LiaRetweetSolid size={22} /> {tweet.retweets}
+          </div>
+        </div>
+
+        <div className="mt-2">
+          <Button
+            className="mx-2"
+            variant="danger"
+            onClick={() => removeTweet(tweet.id)}
+          >
+            delete
+          </Button>
+
+          <Button variant="info" onClick={() => setShowModal(true)}>
+            update
+          </Button>
+        </div>
+
+        {showModal && (
+          <UpdateTweetForm
+            tweet={tweet}
+            setShowModal={setShowModal}
+            updateTweet={updateTweet}
+          />
+        )}
       </div>
-      <div>
-        <Button variant="primary" onClick={() => removeTweet(tweet.id)}>delete</Button>
-      </div>
-    </div>
+    </>
   );
 }
 
 Tweet.propTypes = {
-    tweet: PropTypes.object,
-  };
+  tweet: PropTypes.object,
+  removeTweet: PropTypes.func,
+  updateTweet: PropTypes.func,
+};
 
 export default Tweet;
